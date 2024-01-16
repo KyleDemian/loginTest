@@ -26,8 +26,8 @@ public class Member implements UserDetails {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
     @Builder
     public Member(String loginId, String password, String auth) {

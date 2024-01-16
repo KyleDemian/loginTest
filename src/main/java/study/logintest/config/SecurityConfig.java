@@ -42,6 +42,8 @@ public class SecurityConfig {
             )
             .formLogin(login -> login  // form 방식 로그인 사용
                     .loginPage("/login")
+                    .usernameParameter("loginId")
+                    .passwordParameter("password")
                     .loginProcessingUrl("/login")
                     .defaultSuccessUrl("/", true)
                     .permitAll()

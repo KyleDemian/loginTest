@@ -1,6 +1,9 @@
 package study.logintest.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.logintest.user.dto.MemberDto;
@@ -9,7 +12,7 @@ import study.logintest.user.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberService, UserDetailsService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -30,5 +33,10 @@ public class MemberServiceImpl implements MemberService {
     public Member findByMember(String loginId) {
         return memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException(loginId));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package study.logintest.user.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import study.logintest.user.dto.MemberDto;
 import study.logintest.user.service.MemberService;
 
+import java.security.Principal;
+
 //@RestController
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +25,8 @@ public class MemberController {
     private final MemberService userService;
 
     @GetMapping("/")
-    public String main() {
+    public String main(@AuthenticationPrincipal Principal principal) {
+        System.out.println(principal.getName());
         return "index";
     }
 
@@ -32,7 +36,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login() {
+    public String login(@ModelAttribute MemberDto memberDto) {
+        userService.loadUserByUsername(memberDto.getLoginId());
         return "redirect:/";
     }
 
