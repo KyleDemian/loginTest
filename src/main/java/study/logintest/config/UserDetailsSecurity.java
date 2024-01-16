@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import study.logintest.user.entity.Member;
 import study.logintest.user.entity.Role;
 import study.logintest.user.repository.MemberRepository;
@@ -13,7 +14,7 @@ import study.logintest.user.service.MemberService;
 
 import java.util.Optional;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserDetailsSecurity implements UserDetailsService {
 

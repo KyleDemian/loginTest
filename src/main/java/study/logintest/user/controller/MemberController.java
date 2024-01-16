@@ -25,8 +25,7 @@ public class MemberController {
     private final MemberService userService;
 
     @GetMapping("/")
-    public String main(@AuthenticationPrincipal Principal principal) {
-        System.out.println(principal.getName());
+    public String main() {
         return "index";
     }
 
@@ -36,7 +35,7 @@ public class MemberController {
         return "login/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login-process")
     public String login(@ModelAttribute MemberDto memberDto) {
         userService.loadUserByUsername(memberDto.getLoginId());
         return "redirect:/";
