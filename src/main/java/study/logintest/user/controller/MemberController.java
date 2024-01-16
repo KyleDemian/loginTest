@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import study.logintest.user.dto.MemberDto;
@@ -31,8 +32,8 @@ public class MemberController {
     }
 
     @GetMapping("/sign-up")
-    public String signUpForm(@RequestBody MemberDto memberDto, Model model) throws Exception {
-        model.addAttribute("modelDto", model);
+    public String signUpForm(Model model) throws Exception {
+        model.addAttribute("modelDto", new MemberDto());
         return "login/signup";
     }
 
