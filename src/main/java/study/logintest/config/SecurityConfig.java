@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import study.logintest.user.entity.Role;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -33,15 +34,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-            .cors( cors -> cors.disable())
+//            .cors( cors -> cors.disable())
 //            .cors((httpSecurityCorsConfigurer ->
 //                    httpSecurityCorsConfigurer.disable()))
             .authorizeHttpRequests(request -> request
                     .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                    .anyRequest().authenticated()  // 어떠한 요청이라도 인증필요
+                    .requestMatchers(new AntPathRequestMatcher("/")).authenticated()    // index 페이지만 로그인 요청
+                    .anyRequest()
+                    .permitAll()
             )
             .formLogin(login -> login  // form 방식 로그인 사용
-                    .defaultSuccessUrl("/swagger-ui/index.html", true)
+                    .loginPage("/login")
+                    .loginProcessingUrl("/sign-up")
+                    .defaultSuccessUrl("/", true)
                     .permitAll()
             )
             .logout(withDefaults());   // 로그아웃은 기본설정으로 (/logout으로 인증해제)
@@ -50,20 +55,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                       BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                       UserDetailsService userDetailService) throws Exception{
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailService)
-            .passwordEncoder(bCryptPasswordEncoder)
-            .build()
-            ;
-    }
-
-    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return "";
+//    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){

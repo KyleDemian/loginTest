@@ -24,16 +24,26 @@ public class MemberController {
         return "/index";
     }
 
+    @GetMapping("/login")
+    public String loginForm() {
+        return "/login";
+    }
+
+    @GetMapping("/sign-up")
+    public String signUpForm(@RequestBody MemberDto memberDto) throws Exception {
+        return "/signup";
+    }
+
     @PostMapping("/sign-up")
     public String signUp(@RequestBody MemberDto memberDto) throws Exception {
         Long result = userService.signUp(memberDto);
-        return "회원가입 성공";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
+        return "redirect:/";
     }
 }
