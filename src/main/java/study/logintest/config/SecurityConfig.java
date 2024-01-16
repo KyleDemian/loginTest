@@ -34,9 +34,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
-//            .cors( cors -> cors.disable())
-//            .cors((httpSecurityCorsConfigurer ->
-//                    httpSecurityCorsConfigurer.disable()))
             .authorizeHttpRequests(request -> request
                     .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/")).authenticated()    // index 페이지만 로그인 요청
