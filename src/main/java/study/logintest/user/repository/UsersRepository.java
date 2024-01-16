@@ -8,11 +8,11 @@ import study.logintest.user.entity.Users;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long> {
+public interface UsersRepository extends JpaRepository<Users, Long> {
 
     Optional<Users> findByEmail(String email);
+//
+    Optional<Users> findByNickname(String nickname);
 
-    Optional<User> findByNickname(String nickname);
-
-    Optional<User> findByRefreshToken(String refreshToken);
+    Optional<Users> findByRefreshToken(String refreshToken);
 }

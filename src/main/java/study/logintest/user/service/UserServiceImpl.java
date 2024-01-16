@@ -7,14 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import study.logintest.user.dto.UserDto;
 import study.logintest.user.entity.Role;
 import study.logintest.user.entity.Users;
-import study.logintest.user.repository.UserRepository;
+import study.logintest.user.repository.UsersRepository;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UsersService {
 
-    private final UserRepository userRepository;
+    private final UsersRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void signUp(UserDto userDto) throws Exception{
