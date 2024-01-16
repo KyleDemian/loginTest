@@ -31,7 +31,8 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(Model model) {
+        model.addAttribute("memberDto", new MemberDto());
         return "login/login";
     }
 
