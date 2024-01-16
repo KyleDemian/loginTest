@@ -31,6 +31,12 @@ public class MemberController {
         return "login/login";
     }
 
+    @PostMapping("/login")
+    public String login() {
+        return "redirect:/";
+    }
+
+
     @GetMapping("/sign-up")
     public String signUpForm(Model model) throws Exception {
         model.addAttribute("memberDto", new MemberDto());
@@ -38,7 +44,7 @@ public class MemberController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@RequestBody MemberDto memberDto) throws Exception {
+    public String signUp(@ModelAttribute MemberDto memberDto) throws Exception {
        userService.signUp(memberDto);
         return "redirect:/";
     }
