@@ -9,5 +9,4 @@ public interface MemberService {
 
     Member findByMember(String loginId);
 
-    UserDetails loadUserByUsername(String loginId);
 }

@@ -37,7 +37,7 @@ public class MemberController {
 
     @PostMapping("/login-process")
     public String login(@ModelAttribute MemberDto memberDto) {
-        userService.loadUserByUsername(memberDto.getLoginId());
+
         return "redirect:/";
     }
 
