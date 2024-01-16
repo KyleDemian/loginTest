@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,17 +22,18 @@ public class MemberController {
 
     @GetMapping("/")
     public String main() {
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/login")
     public String loginForm() {
-        return "/login";
+        return "login/login";
     }
 
     @GetMapping("/sign-up")
-    public String signUpForm(@RequestBody MemberDto memberDto) throws Exception {
-        return "/signup";
+    public String signUpForm(@RequestBody MemberDto memberDto, Model model) throws Exception {
+        model.addAttribute("modelDto", model);
+        return "login/signup";
     }
 
     @PostMapping("/sign-up")
