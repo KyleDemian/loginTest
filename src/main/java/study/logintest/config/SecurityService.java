@@ -24,10 +24,9 @@ public class SecurityService implements UserDetailsService {
         Optional<Member> findUser = memberRepository.findByLoginId(username);
         Member member = findUser.orElseThrow(() -> new UsernameNotFoundException("ID 없음"));
 
-        return (UserDetails) Member.builder()
+        return Member.builder()
                 .loginId(member.getLoginId())
                 .password(member.getPassword())
-                .role(member.getRole())
                 .build();
     }
 }
