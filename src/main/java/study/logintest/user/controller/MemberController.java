@@ -33,13 +33,13 @@ public class MemberController {
 
     @GetMapping("/sign-up")
     public String signUpForm(Model model) throws Exception {
-        model.addAttribute("modelDto", new MemberDto());
+        model.addAttribute("memberDto", new MemberDto());
         return "login/signup";
     }
 
     @PostMapping("/sign-up")
     public String signUp(@RequestBody MemberDto memberDto) throws Exception {
-        Long result = userService.signUp(memberDto);
+       userService.signUp(memberDto);
         return "redirect:/";
     }
 
