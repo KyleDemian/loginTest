@@ -18,7 +18,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((auth) -> auth
+        http
+                .authorizeHttpRequests((auth) -> auth
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
@@ -30,8 +31,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) -> web.ignoring().requestMatchers("/","/sign-up","/login","/check-email","/check-email-token",
-                "email-login","/check-email-login","login-link")
+        return (web) -> web.ignoring().requestMatchers("/","/sign-up","/login")
                 .requestMatchers(HttpMethod.GET, "/profile/*")
                 .requestMatchers("/node_modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
