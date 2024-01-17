@@ -1,6 +1,7 @@
 package study.logintest.config;
 
 import jakarta.servlet.DispatcherType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,15 +16,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import study.logintest.user.entity.Role;
+import study.logintest.user.service.MemberServiceImpl;
+
+import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final MemberServiceImpl memberService;
+    private final DataSource dataSource;
+    
     //ref.
     //https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
     //https://velog.io/@letsdev/Spring-Boot-3.1Spring-6.1-Security-Config-csrf-is-deprecated-and-marked-for-removal
@@ -48,20 +58,28 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/", true)
                     .permitAll()
             )
-            .logout(withDefaults());   // 로그아웃은 기본설정으로 (/logout으로 인증해제)
+            .logout(withDefaults())
+//            .logout(logout -> logout
+//                .logoutSuccessUrl("/"))
+            .rememberMe(rememberMe -> rememberMe        // Front name = remember-me 사용시 호출.
+                    .userDetailsService(memberService)
+                    .tokenRepository(tokenRepository()))
+            ;
 
         return http.build();
+    }
+
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return "";
-//    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){

@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import study.logintest.user.service.MemberServiceImpl;
 
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.CredentialExpiredException;
@@ -18,7 +19,7 @@ import javax.security.auth.login.CredentialExpiredException;
 @RequiredArgsConstructor
 public class UserDetailAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsSecurity userDetailsSecurity;
+    private final MemberServiceImpl memberService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -26,7 +27,7 @@ public class UserDetailAuthenticationProvider implements AuthenticationProvider 
         String loginId = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        UserDetails users = userDetailsSecurity.loadUserByUsername(loginId);
+        UserDetails users = memberService.loadUserByUsername(loginId);
 
         try {
             if (!passwordEncoder.matches(password, users.getPassword())) {

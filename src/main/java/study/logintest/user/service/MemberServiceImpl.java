@@ -1,6 +1,7 @@
 package study.logintest.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,11 +9,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.logintest.user.dto.MemberDto;
 import study.logintest.user.entity.Member;
+import study.logintest.user.entity.Role;
 import study.logintest.user.repository.MemberRepository;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+public class MemberServiceImpl implements MemberService, UserDetailsService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,5 +39,16 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(loginId));
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        Optional<Member> findOne = memberRepository.findByLoginId(loginId);
+        Member member = findOne.orElseThrow(() -> new UsernameNotFoundException("없음."));
 
+        return User.builder()
+                .username(member.getLoginId())
+                .password(member.getPassword())
+                .roles(String.valueOf(Role.USER))
+                .build()
+                ;
+    }
 }
